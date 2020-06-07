@@ -1,0 +1,6 @@
+name: Example-Packet-Events
+version: ${project.version}
+main: io.github.retrooper.examplepacketevents.Main
+depend: [packetevents]
+authors: [retrooper]
+website: http://retrooper.github.io
