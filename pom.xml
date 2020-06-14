@@ -15,42 +15,42 @@
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>http://retrooper.github.io</url>
+    <url>https://retrooper.github.io</url>
 
+    <!-- You can build the project with this: "mvn clean compile assembly:single" -->
     <build>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <groupId>com.googlecode.mavennatives</groupId>
+                <artifactId>maven-nativedependencies-plugin</artifactId>
+                <version>0.0.5</version>
+                <executions>
+                    <execution>
+                        <id>unpacknatives</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                        <configuration>
-                            <createDependencyReducedPom>false</createDependencyReducedPom>
-                        </configuration>
-                    </execution>
-                </executions>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
             </plugin>
         </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
     <repositories>
@@ -59,12 +59,8 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>spigotmc-repo</id>
+            <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
-        <repository>
-            <id>sonatype</id>
-            <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
     </repositories>
 
@@ -72,13 +68,12 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>c5a3e57</version>
+            <version>0d6d34a</version>
         </dependency>
-
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

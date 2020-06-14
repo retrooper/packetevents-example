@@ -1,6 +1,6 @@
 name: Example-Packet-Events
-version: ${project.version}
+version: 1.0.0
 main: io.github.retrooper.examplepacketevents.Main
-depend: [packetevents]
 authors: [retrooper]
-website: http://retrooper.github.io
+website: https://retrooper.github.io
+load: STARTUP

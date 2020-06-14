@@ -17,13 +17,15 @@ public class Main extends JavaPlugin implements PacketListener {
 
     @Override
     public void onEnable() {
-        PacketEvents.setup(this, false);
+        PacketEvents.start(this);
         PacketEvents.getEventManager().registerListener(this);
+        //cancel server tick task if u don't want to use the server tick event
+        PacketEvents.getServerTickTask().cancel();
     }
 
     @Override
     public void onDisable() {
-        PacketEvents.cleanup();
+        PacketEvents.stop();
     }
 
     @PacketHandler
