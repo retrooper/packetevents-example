@@ -7,7 +7,7 @@ import io.github.retrooper.packetevents.enums.EntityAnimationType;
 import io.github.retrooper.packetevents.event.PacketListener;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
-import io.github.retrooper.packetevents.packet.Packet;
+import io.github.retrooper.packetevents.packet.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.chat.WrappedPacketInChat;
 import io.github.retrooper.packetevents.packetwrappers.in.flying.WrappedPacketInFlying;
 import io.github.retrooper.packetevents.packetwrappers.out.animation.WrappedPacketOutAnimation;
@@ -32,8 +32,8 @@ public class Main extends JavaPlugin implements PacketListener {
 
     @PacketHandler
     public void onPacketSend(PacketSendEvent e) {
-        if (e.getPacketName().equals(Packet.Server.ENTITY_VELOCITY)) {
-            WrappedPacketOutEntityVelocity velocityPacket = new WrappedPacketOutEntityVelocity(e.getPacket());
+        if (e.getPacketName().equals(PacketType.Server.ENTITY_VELOCITY)) {
+            WrappedPacketOutEntityVelocity velocityPacket = new WrappedPacketOutEntityVelocity(e.getNMSPacket());
             double velocityX = velocityPacket.getVelocityX();
             double velocityY = velocityPacket.getVelocityY();
             double velocityZ = velocityPacket.getVelocityZ();
@@ -42,16 +42,16 @@ public class Main extends JavaPlugin implements PacketListener {
 
             final ClientVersion clientVersion = PacketEvents.getClientVersion(e.getPlayer());
 
-        } else if (e.getPacketName().equals(Packet.Server.CHAT)) {
-            WrappedPacketOutChat chatPacket = new WrappedPacketOutChat(e.getPacket());
+        } else if (e.getPacketName().equals(PacketType.Server.CHAT)) {
+            WrappedPacketOutChat chatPacket = new WrappedPacketOutChat(e.getNMSPacket());
             String message= chatPacket.getMessage();
         }
     }
 
     @PacketHandler
     public void onReceive(PacketReceiveEvent e) {
-        if (e.getPacketName().equals(Packet.Client.CHAT)) {
-            WrappedPacketInChat chat = new WrappedPacketInChat(e.getPacket());
+        if (e.getPacketName().equals(PacketType.Client.CHAT)) {
+            WrappedPacketInChat chat = new WrappedPacketInChat(e.getNMSPacket());
             if (chat.getMessage().contains("pls jump")) {
                 WrappedPacketOutEntityVelocity velocity = new WrappedPacketOutEntityVelocity(e.getPlayer(), 0, 1, 0);
                 PacketEvents.sendPacket(e.getPlayer(), velocity);
@@ -60,8 +60,8 @@ public class Main extends JavaPlugin implements PacketListener {
                 PacketEvents.sendPacket(e.getPlayer(), anim);
             }
         }
-        else if(Packet.isInstanceOfFlyingPacket(e.getPacket())) {
-            WrappedPacketInFlying flying = new WrappedPacketInFlying(e.getPacket());
+        else if(PacketType.Util.isInstanceOfFlyingPacket(e.getNMSPacket())) {
+            WrappedPacketInFlying flying = new WrappedPacketInFlying(e.getNMSPacket());
             boolean isLook = flying.isLook();
             boolean onGround = flying.isOnGround();
 
