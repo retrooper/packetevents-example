@@ -10,6 +10,7 @@ import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import io.github.retrooper.packetevents.packet.PacketType;
 import io.github.retrooper.packetevents.packetwrappers.in.chat.WrappedPacketInChat;
 import io.github.retrooper.packetevents.packetwrappers.in.flying.WrappedPacketInFlying;
+import io.github.retrooper.packetevents.packetwrappers.out.abilities.WrappedPacketOutAbilities;
 import io.github.retrooper.packetevents.packetwrappers.out.animation.WrappedPacketOutAnimation;
 import io.github.retrooper.packetevents.packetwrappers.out.chat.WrappedPacketOutChat;
 import io.github.retrooper.packetevents.packetwrappers.out.entityvelocity.WrappedPacketOutEntityVelocity;
@@ -40,7 +41,6 @@ public class Main extends JavaPlugin implements PacketListener {
 
             int ping = PacketEvents.getPing(e.getPlayer());
 
-            final ClientVersion clientVersion = PacketEvents.getClientVersion(e.getPlayer());
 
         } else if (e.getPacketName().equals(PacketType.Server.CHAT)) {
             WrappedPacketOutChat chatPacket = new WrappedPacketOutChat(e.getNMSPacket());
@@ -52,17 +52,36 @@ public class Main extends JavaPlugin implements PacketListener {
     public void onReceive(PacketReceiveEvent e) {
         if (e.getPacketName().equals(PacketType.Client.CHAT)) {
             WrappedPacketInChat chat = new WrappedPacketInChat(e.getNMSPacket());
-            if (chat.getMessage().contains("pls jump")) {
+            if (chat.getMessage().equals("pls jump")) {
                 WrappedPacketOutEntityVelocity velocity = new WrappedPacketOutEntityVelocity(e.getPlayer(), 0, 1, 0);
                 PacketEvents.sendPacket(e.getPlayer(), velocity);
-            } else if (chat.getMessage().contains("pls swing")) {
+            } else if (chat.getMessage().equals("pls swing")) {
                 WrappedPacketOutAnimation anim = new WrappedPacketOutAnimation(e.getPlayer(), EntityAnimationType.SWING_MAIN_ARM);
                 PacketEvents.sendPacket(e.getPlayer(), anim);
+            }
+            else if(chat.getMessage().equals("what is my client version")) {
+                //ViaVersion or ProtocolSupport is required to do this
+                final ClientVersion clientVersion = PacketEvents.getClientVersion(e.getPlayer());
+                if(clientVersion == ClientVersion.ACCESS_FAILURE) {
+                    //ViaVersion or ProtocolSupport could not be found
+                }
+                else {
+                    e.getPlayer().sendMessage("Your client version is " + clientVersion.name());
+                }
+            }
+            else if(chat.getMessage().equals("give me abilities")) {
+                //arguments: vulnerable, isFlying, allowFlight, canBuildInstantly, flySpeed, walkSpeed
+                WrappedPacketOutAbilities abilities = new WrappedPacketOutAbilities(true, false, true, false, 10, 2);
+                PacketEvents.sendPacket(e.getPlayer(), abilities);
             }
         }
         else if(PacketType.Util.isInstanceOfFlyingPacket(e.getNMSPacket())) {
             WrappedPacketInFlying flying = new WrappedPacketInFlying(e.getNMSPacket());
-            boolean isLook = flying.isLook();
+            boolean isLook = flying.isLook(); //is PacketPlayInLook
+            boolean isPosition = flying.isPosition(); //is PacketPlayInPosition
+
+            boolean isPositionLook = isLook && isPosition; //is PacketPlayInPositionLook
+
             boolean onGround = flying.isOnGround();
 
             double x = flying.getX(), y = flying.getY(), z = flying.getZ();
