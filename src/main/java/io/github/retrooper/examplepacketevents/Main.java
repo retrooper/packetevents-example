@@ -35,6 +35,7 @@ public class Main extends JavaPlugin implements PacketListener {
     @PacketHandler
     public void onPacketSend(PacketSendEvent e) {
         if (e.getPacketName().equals(PacketType.Server.ENTITY_VELOCITY)) {
+        if (e.getPacketName().equals(PacketTypeNames.Server.ENTITY_VELOCITY)) {
             WrappedPacketOutEntityVelocity velocityPacket = new WrappedPacketOutEntityVelocity(e.getNMSPacket());
             double velocityX = velocityPacket.getVelocityX();
             double velocityY = velocityPacket.getVelocityY();
@@ -43,7 +44,7 @@ public class Main extends JavaPlugin implements PacketListener {
             int ping = PacketEvents.getPing(e.getPlayer());
 
 
-        } else if (e.getPacketName().equals(PacketType.Server.CHAT)) {
+        } else if (e.getPacketName().equals(PacketTypeNames.Server.CHAT)) {
             WrappedPacketOutChat chatPacket = new WrappedPacketOutChat(e.getNMSPacket());
             String message= chatPacket.getMessage();
         }
