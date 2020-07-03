@@ -22,9 +22,8 @@ public class Main extends JavaPlugin implements PacketListener {
     @Override
     public void onEnable() {
         PacketEvents.start(this);
-        PacketEvents.getEventManager().registerListener(this);
-        //cancel server tick task if u don't want to use the server tick event
-        PacketEvents.getServerTickTask().cancel();
+        PacketEvents.getAPI().getEventManager().registerListener(this);
+        PacketEvents.getAPI().getServerTickTask().cancel();
     }
 
     @Override
@@ -34,38 +33,37 @@ public class Main extends JavaPlugin implements PacketListener {
 
     @PacketHandler
     public void onPacketSend(PacketSendEvent e) {
-        if (e.getPacketName().equals(PacketType.Server.ENTITY_VELOCITY)) {
         if (e.getPacketName().equals(PacketTypeNames.Server.ENTITY_VELOCITY)) {
             WrappedPacketOutEntityVelocity velocityPacket = new WrappedPacketOutEntityVelocity(e.getNMSPacket());
             double velocityX = velocityPacket.getVelocityX();
             double velocityY = velocityPacket.getVelocityY();
             double velocityZ = velocityPacket.getVelocityZ();
 
-            int ping = PacketEvents.getPing(e.getPlayer());
+            int ping = PacketEvents.getAPI().getPlayerUtilities().getPlayerPing(e.getPlayer());
 
 
         } else if (e.getPacketName().equals(PacketTypeNames.Server.CHAT)) {
             WrappedPacketOutChat chatPacket = new WrappedPacketOutChat(e.getNMSPacket());
-            String message= chatPacket.getMessage();
+            String message = chatPacket.getMessage();
         }
     }
 
     @PacketHandler
     public void onReceive(PacketReceiveEvent e) {
-        if (e.getPacketName().equals(PacketType.Client.CHAT)) {
+        if (e.getPacketId() == PacketType.Client.CHAT) {
             WrappedPacketInChat chat = new WrappedPacketInChat(e.getNMSPacket());
             if (chat.getMessage().equals("pls jump")) {
                 WrappedPacketOutEntityVelocity velocity = new WrappedPacketOutEntityVelocity(e.getPlayer(), 0, 1, 0);
-                PacketEvents.sendPacket(e.getPlayer(), velocity);
+                PacketEvents.getAPI().getPlayerUtilities().sendPacket(e.getPlayer(), velocity);
             } else if (chat.getMessage().equals("pls swing")) {
                 WrappedPacketOutAnimation anim = new WrappedPacketOutAnimation(e.getPlayer(), EntityAnimationType.SWING_MAIN_ARM);
-                PacketEvents.sendPacket(e.getPlayer(), anim);
+                PacketEvents.getAPI().getPlayerUtilities().sendPacket(e.getPlayer(), anim);
             }
             else if(chat.getMessage().equals("what is my client version")) {
-                //ViaVersion or ProtocolSupport is required to do this
-                final ClientVersion clientVersion = PacketEvents.getClientVersion(e.getPlayer());
+                //ViaVersion or ProtocolSupport or ProtocolLib is required to do this
+                final ClientVersion clientVersion = PacketEvents.getAPI().getPlayerUtilities().getClientVersion(e.getPlayer());
                 if(clientVersion == ClientVersion.ACCESS_FAILURE) {
-                    //ViaVersion or ProtocolSupport could not be found
+                    //ViaVersion or ProtocolSupport or ProtocolLib could not be found
                 }
                 else {
                     e.getPlayer().sendMessage("Your client version is " + clientVersion.name());
@@ -74,10 +72,10 @@ public class Main extends JavaPlugin implements PacketListener {
             else if(chat.getMessage().equals("give me abilities")) {
                 //arguments: vulnerable, isFlying, allowFlight, canBuildInstantly, flySpeed, walkSpeed
                 WrappedPacketOutAbilities abilities = new WrappedPacketOutAbilities(true, false, true, false, 10, 2);
-                PacketEvents.sendPacket(e.getPlayer(), abilities);
+                PacketEvents.getAPI().getPlayerUtilities().sendPacket(e.getPlayer(), abilities);
             }
         }
-        else if(PacketType.Util.isInstanceOfFlyingPacket(e.getNMSPacket())) {
+        else if(PacketType.Client.Util.isInstanceOfFlying(e.getPacketId())) {
             WrappedPacketInFlying flying = new WrappedPacketInFlying(e.getNMSPacket());
             boolean isLook = flying.isLook(); //is PacketPlayInLook
             boolean isPosition = flying.isPosition(); //is PacketPlayInPosition
