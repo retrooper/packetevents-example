@@ -3,7 +3,7 @@ package io.github.retrooper.examplepacketevents;
 import io.github.retrooper.packetevents.PacketEvents;
 import io.github.retrooper.packetevents.annotations.PacketHandler;
 import io.github.retrooper.packetevents.enums.ClientVersion;
-import io.github.retrooper.packetevents.enums.EntityAnimationType;
+import io.github.retrooper.packetevents.enums.minecraft.EntityAnimationType;
 import io.github.retrooper.packetevents.event.PacketListener;
 import io.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import io.github.retrooper.packetevents.event.impl.PacketSendEvent;
