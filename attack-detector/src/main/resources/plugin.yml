@@ -1,0 +1,7 @@
+name: AttackDetector
+main: main.Main
+version: 1.0.0
+author: retrooper
+load: STARTUP
+depend:
+  - packetevents

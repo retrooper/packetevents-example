@@ -1,0 +1,10 @@
+name: ShadingExample
+main: main.Main
+version: 1.0.0
+author: retrooper
+load: STARTUP
+softdepend:
+  - packetevents
+  - ViaVersion
+  - ProtocolSupport
+  - ProtocolLib
