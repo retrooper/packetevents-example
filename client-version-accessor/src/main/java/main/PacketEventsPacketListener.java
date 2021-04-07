@@ -1,7 +1,7 @@
 package main;
 
 import io.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.event.PacketListenerDynamic;
+import io.github.retrooper.packetevents.event.PacketListenerAbstract;
 import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
 import io.github.retrooper.packetevents.event.priority.PacketEventPriority;
 import io.github.retrooper.packetevents.packettype.PacketType;
@@ -9,7 +9,7 @@ import io.github.retrooper.packetevents.packetwrappers.play.in.chat.WrappedPacke
 import io.github.retrooper.packetevents.utils.player.ClientVersion;
 import org.bukkit.entity.Player;
 
-public class PacketEventsPacketListener extends PacketListenerDynamic {
+public class PacketEventsPacketListener extends PacketListenerAbstract {
     public PacketEventsPacketListener() {
         super(PacketEventPriority.LOW);
     }
