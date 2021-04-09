@@ -12,7 +12,7 @@ public class Main extends JavaPlugin {
         PacketEvents.create(this);
         PacketEventsSettings settings = PacketEvents.get().getSettings();
         settings
-                .backupServerVersion(ServerVersion.v_1_7_10)
+                .fallbackServerVersion(ServerVersion.v_1_7_10)
                 .compatInjector(false)
                 .checkForUpdates(false);
         PacketEvents.get().loadAsyncNewThread();

@@ -2,7 +2,7 @@ name: ShadingExample
 main: main.Main
 version: 1.0.0
 author: retrooper
-load: STARTUP
+load: POSTWORLD
 softdepend:
   - packetevents
   - ViaVersion
