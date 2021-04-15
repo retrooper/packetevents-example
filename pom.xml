@@ -13,6 +13,7 @@
         <module>attack-detector</module>
         <module>knockback-detector</module>
         <module>shading-packetevents</module>
+        <module>npc-player-tracker</module>
     </modules>
 
     <properties>
@@ -33,9 +34,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
