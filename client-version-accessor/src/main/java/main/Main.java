@@ -14,13 +14,14 @@ public class Main extends JavaPlugin {
         settings
                 .fallbackServerVersion(ServerVersion.v_1_7_10)
                 .compatInjector(false)
-                .checkForUpdates(false);
+                .checkForUpdates(false)
+                .bStats(true);
         PacketEvents.get().loadAsyncNewThread();
     }
 
     @Override
     public void onEnable() {
-        //We register before initializing as it is possible that an event is called during initialization.
+        //We register before calling PacketEvents#init, because that method might already call some events.
         PacketEvents.get().registerListener(new PacketEventsPacketListener());
         PacketEvents.get().init();
     }

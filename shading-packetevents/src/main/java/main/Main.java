@@ -14,13 +14,14 @@ public class Main extends JavaPlugin {
         settings
                 .fallbackServerVersion(ServerVersion.v_1_7_10)
                 .compatInjector(false)
-                .checkForUpdates(false);
+                .checkForUpdates(false)
+                .bStats(true);
         PacketEvents.get().loadAsyncNewThread();
     }
 
     @Override
     public void onEnable() {
-        //TODO Register a packet listener
+        //TODO Register a packet listener here
         PacketEvents.get().init();
     }
 
