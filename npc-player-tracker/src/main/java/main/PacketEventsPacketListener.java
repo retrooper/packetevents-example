@@ -61,23 +61,22 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
             NPC npc = npcEntityID == null ? null : PacketEvents.get().getServerUtils().getNPCManager().getNPCById(npcEntityID);
             if (npc != null) {
                 WrappedPacketInFlying wrappedPacketInFlying = new WrappedPacketInFlying(event.getNMSPacket());
-                boolean isLook = wrappedPacketInFlying.hasRotationChanged();
-                boolean isPos = wrappedPacketInFlying.hasPositionChanged();
+                boolean isRotating = wrappedPacketInFlying.isRotating();
+                boolean isMoving = wrappedPacketInFlying.isMoving();
                 List<Player> players = new ArrayList<>();
                 players.add(player);
-                if (isPos && isLook) {
+                if (isMoving && isRotating) {
                     npc.moveAndRotate(players,
                             wrappedPacketInFlying.getPosition(),
                             wrappedPacketInFlying.getYaw(),
                             wrappedPacketInFlying.getPitch());
                 }
-                else if (isPos) {
+                else if (isMoving) {
                     npc.move(players, wrappedPacketInFlying.getPosition());
                 }
-                else if (isLook) {
+                else if (isRotating) {
                     npc.rotate(players, wrappedPacketInFlying.getYaw(), wrappedPacketInFlying.getPitch());
                 }
-
             }
         }
     }
