@@ -1,12 +1,11 @@
 package main;
 
-import io.github.retrooper.packetevents.event.PacketListenerAbstract;
-import io.github.retrooper.packetevents.event.PacketListenerPriority;
-import io.github.retrooper.packetevents.event.impl.PacketPlaySendEvent;
-import io.github.retrooper.packetevents.packettype.PacketType;
-import io.github.retrooper.packetevents.packetwrappers.play.out.entityvelocity.WrappedPacketOutEntityVelocity;
-import io.github.retrooper.packetevents.utils.vector.Vector3d;
-import org.bukkit.entity.Entity;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.impl.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 import org.bukkit.entity.Player;
 
 public class PacketEventsPacketListener extends PacketListenerAbstract {
@@ -15,14 +14,13 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
     }
 
     @Override
-    public void onPacketPlaySend(PacketPlaySendEvent event) {
-        Player player = event.getPlayer();
-        if (event.getPacketId() == PacketType.Play.Server.ENTITY_VELOCITY) {
-            WrappedPacketOutEntityVelocity velocityPacket = new WrappedPacketOutEntityVelocity(event.getNMSPacket());
-            Entity entity = velocityPacket.getEntity(player.getWorld());
-            if (entity != null && entity.getEntityId() == player.getEntityId()) {
-                Vector3d velocity = velocityPacket.getVelocity();
-
+    public void onPacketSend(PacketSendEvent event) {
+        Player player = (Player) event.getPlayer();
+        if (event.getPacketType() == PacketType.Play.Server.ENTITY_VELOCITY) {
+            WrapperPlayServerEntityVelocity entityVelocity = new WrapperPlayServerEntityVelocity(event);
+            int entityID = entityVelocity.getEntityID();
+            if (entityID != player.getEntityId()) {
+                Vector3d velocity = entityVelocity.getVelocity();
                 //How to modify:
                 //velocityPacket.setVelocity(newVelocity);
 

@@ -13,7 +13,6 @@
         <module>attack-detector</module>
         <module>knockback-detector</module>
         <module>shading-packetevents</module>
-        <module>npc-player-tracker</module>
     </modules>
 
     <properties>
@@ -41,9 +40,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.retrooper</groupId>
-            <artifactId>packetevents</artifactId>
-            <version>1.8-pre-17</version>
+            <groupId>com.github.retrooper.packetevents</groupId>
+            <artifactId>bukkit</artifactId>
+            <version>2.0-473bb3a1c3-1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

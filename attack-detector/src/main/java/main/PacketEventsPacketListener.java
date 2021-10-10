@@ -1,11 +1,10 @@
 package main;
 
-import io.github.retrooper.packetevents.event.PacketListenerAbstract;
-import io.github.retrooper.packetevents.event.PacketListenerPriority;
-import io.github.retrooper.packetevents.event.impl.PacketPlayReceiveEvent;
-import io.github.retrooper.packetevents.packettype.PacketType;
-import io.github.retrooper.packetevents.packetwrappers.play.in.useentity.WrappedPacketInUseEntity;
-import org.bukkit.entity.Entity;
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import org.bukkit.entity.Player;
 
 public class PacketEventsPacketListener extends PacketListenerAbstract {
@@ -14,20 +13,15 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
     }
 
     @Override
-    public void onPacketPlayReceive(PacketPlayReceiveEvent event) {
-        Player player = event.getPlayer();
-        if (event.getPacketId() == PacketType.Play.Client.USE_ENTITY) {
-            WrappedPacketInUseEntity wrappedPacketInUseEntity = new WrappedPacketInUseEntity(event.getNMSPacket());
-            WrappedPacketInUseEntity.EntityUseAction action = wrappedPacketInUseEntity.getAction();
-            Entity entity = wrappedPacketInUseEntity.getEntity(player.getWorld());
-            if (action == WrappedPacketInUseEntity.EntityUseAction.ATTACK) {
-                if (entity != null) {
-                    //It is NOT an NPC if we can find the Bukkit Entity
-                    player.sendMessage("You have attacked an " + entity.getType());
-                } else {
-                    int entityID = wrappedPacketInUseEntity.getEntityId();
-                    player.sendMessage("You have attacked a fake entity with the Entity ID: " + entityID);
-                }
+    public void onPacketReceive(PacketReceiveEvent event) {
+        Player player = (Player) event.getPlayer();
+        if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
+            WrapperPlayClientInteractEntity interactEntity = new WrapperPlayClientInteractEntity(event);
+            WrapperPlayClientInteractEntity.Type type = interactEntity.getType();
+            if (type == WrapperPlayClientInteractEntity.Type.ATTACK) {
+                //TODO getEntityByID
+                int entityID = interactEntity.getEntityID();
+                player.sendMessage("You have attacked a fake entity with the Entity ID: " + entityID);
             }
 
         }
