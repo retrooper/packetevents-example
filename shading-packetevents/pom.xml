@@ -33,8 +33,12 @@
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                             <relocations>
                                 <relocation>
-                                    <pattern>io.github.retrooper.packetevents</pattern>
-                                    <shadedPattern>io.github.retrooper.customplugin.packetevents</shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <pattern>com.github.retrooper</pattern>
+                                    <shadedPattern>com.github.retrooper.customplugin</shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                </relocation>
+                                <relocation>
+                                    <pattern>io.github.retrooper</pattern>
+                                    <shadedPattern>io.github.retrooper.customplugin</shadedPattern> <!--relocate packetevents package. choose something unique!-->
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -80,7 +84,7 @@
         <dependency>
             <groupId>com.github.retrooper.packetevents</groupId>
             <artifactId>bukkit</artifactId>
-            <version>2.0-473bb3a1c3-1</version>
+            <version>2.0-1abf538ecd-1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
