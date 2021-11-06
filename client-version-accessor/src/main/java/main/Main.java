@@ -8,7 +8,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.build(PacketEventsBuilder.build(this));
+        PacketEvents.setAPI(PacketEventsBuilder.build(this));
         PacketEvents.getAPI().load();
     }
 

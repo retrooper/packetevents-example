@@ -21,9 +21,8 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
             if (type == WrapperPlayClientInteractEntity.Type.ATTACK) {
                 //TODO getEntityByID
                 int entityID = interactEntity.getEntityID();
-                player.sendMessage("You have attacked a fake entity with the Entity ID: " + entityID);
+                player.sendMessage("You have attacked a entity with the Entity ID: " + entityID);
             }
-
         }
     }
 }
