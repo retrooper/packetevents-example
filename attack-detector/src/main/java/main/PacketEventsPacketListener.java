@@ -1,17 +1,16 @@
 package main;
 
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.protocol.world.Dimension;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 import org.bukkit.entity.Player;
 
-public class PacketEventsPacketListener extends PacketListenerAbstract {
-    public PacketEventsPacketListener() {
-        super(PacketListenerPriority.LOW);
-    }
-
+public class PacketEventsPacketListener implements PacketListener {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
         Player player = (Player) event.getPlayer();
@@ -23,6 +22,16 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                 int entityID = interactEntity.getEntityID();
                 player.sendMessage("You have attacked a entity with the Entity ID: " + entityID);
             }
+        }
+    }
+
+    @Override
+    public void onPacketSend(PacketSendEvent event) {
+        if (event.getPacketType() == PacketType.Play.Server.RESPAWN) {
+            WrapperPlayServerRespawn respawn = new WrapperPlayServerRespawn(event);
+            Dimension dimension = respawn.getDimension();
+            GameMode gameMode = respawn.getGameMode();
+            System.out.println("You have respawned! Dimension type: " + dimension.getType().name() + ", Game mode: " + gameMode.name());
         }
     }
 }
