@@ -15,7 +15,6 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener());
-        //TODO Register a packet listener here
         PacketEvents.getAPI().init();
     }
 

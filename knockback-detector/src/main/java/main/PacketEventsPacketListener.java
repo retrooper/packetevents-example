@@ -18,7 +18,7 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
         Player player = (Player) event.getPlayer();
         if (event.getPacketType() == PacketType.Play.Server.ENTITY_VELOCITY) {
             WrapperPlayServerEntityVelocity entityVelocity = new WrapperPlayServerEntityVelocity(event);
-            int entityID = entityVelocity.getEntityID();
+            int entityID = entityVelocity.getEntityId();
             if (entityID != player.getEntityId()) {
                 Vector3d velocity = entityVelocity.getVelocity();
                 //How to modify:
