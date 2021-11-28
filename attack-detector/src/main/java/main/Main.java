@@ -2,14 +2,14 @@ package main;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.factory.bukkit.PacketEventsBuilder;
+import com.github.retrooper.packetevents.factory.bukkit.BukkitPacketEventsBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.setAPI(PacketEventsBuilder.build(this));
+        PacketEvents.setAPI(BukkitPacketEventsBuilder.build(this));
         PacketEvents.getAPI().load();
     }
 

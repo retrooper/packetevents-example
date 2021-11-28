@@ -2,11 +2,14 @@ package main;
 
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
+import com.github.retrooper.packetevents.netty.buffer.ByteBufAbstractInputStream;
 import com.github.retrooper.packetevents.protocol.inventory.ItemStack;
 import com.github.retrooper.packetevents.protocol.inventory.ItemTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
 import org.bukkit.entity.Player;
+
+import java.io.DataInput;
 
 public class PacketEventsListener extends PacketListenerAbstract {
     @Override
