@@ -25,8 +25,8 @@ public class PacketEventsPacketListener implements PacketListener {
         //Whenever the player sends an entity interaction packet.
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity interactEntity = new WrapperPlayClientInteractEntity(event);
-            WrapperPlayClientInteractEntity.Type type = interactEntity.getType();
-            if (type == WrapperPlayClientInteractEntity.Type.ATTACK) {
+            WrapperPlayClientInteractEntity.InteractAction action = interactEntity.getAction();
+            if (action == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                 int entityID = interactEntity.getEntityId();
                 //Send them a message using the chat packet.
                 List<TextComponent> components = new ArrayList<>();
