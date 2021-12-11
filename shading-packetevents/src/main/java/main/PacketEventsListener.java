@@ -9,7 +9,6 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
 import org.bukkit.entity.Player;
 
-import java.io.DataInput;
 
 public class PacketEventsListener extends PacketListenerAbstract {
     @Override

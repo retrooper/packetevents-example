@@ -2,6 +2,7 @@ package main;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.factory.bukkit.BukkitPacketEventsBuilder;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
