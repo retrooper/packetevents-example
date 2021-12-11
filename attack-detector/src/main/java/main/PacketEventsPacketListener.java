@@ -7,7 +7,7 @@ import com.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.chat.Color;
 import com.github.retrooper.packetevents.protocol.chat.component.BaseComponent;
 import com.github.retrooper.packetevents.protocol.chat.component.HoverEvent;
-import com.github.retrooper.packetevents.protocol.chat.component.TextComponent;
+import com.github.retrooper.packetevents.protocol.chat.component.impl.TextComponent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.world.Dimension;
@@ -15,8 +15,6 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class PacketEventsPacketListener implements PacketListener {
@@ -29,24 +27,22 @@ public class PacketEventsPacketListener implements PacketListener {
             if (action == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                 int entityID = interactEntity.getEntityId();
                 //Send them a message using the chat packet.
-                List<TextComponent> components = new ArrayList<>();
-                List<BaseComponent> hoverTextComponents = new ArrayList<>();
-                hoverTextComponents.add(TextComponent.builder()
+                BaseComponent hoverTextComponent = TextComponent.builder()
                         .text("Entity ID: " + entityID)
                         .color(Color.BRIGHT_GREEN)
                         .bold(true)
                         .italic(true)
-                        .build());
+                        .build();
 
-                components.add(TextComponent.builder()
+                BaseComponent textComponent = (TextComponent.builder()
                         .text("You have attacked an entity.")
                         .hoverEvent(new HoverEvent(HoverEvent.HoverType.SHOW_TEXT,
-                                hoverTextComponents))
+                                hoverTextComponent))
                         .color(Color.DARK_GREEN)
                         .build()
                 );
 
-                WrapperPlayServerChatMessage chatMessagePacket = new WrapperPlayServerChatMessage(components,
+                WrapperPlayServerChatMessage chatMessagePacket = new WrapperPlayServerChatMessage(textComponent,
                         WrapperPlayServerChatMessage.ChatPosition.CHAT,
                         new UUID(0L, 0L));
 
