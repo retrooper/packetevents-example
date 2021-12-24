@@ -34,11 +34,13 @@
                             <relocations>
                                 <relocation>
                                     <pattern>com.github.retrooper</pattern>
-                                    <shadedPattern>com.github.retrooper.customplugin</shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <shadedPattern>com.github.retrooper.customplugin
+                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
                                 </relocation>
                                 <relocation>
                                     <pattern>io.github.retrooper</pattern>
-                                    <shadedPattern>io.github.retrooper.customplugin</shadedPattern> <!--relocate packetevents package. choose something unique!-->
+                                    <shadedPattern>io.github.retrooper.customplugin
+                                    </shadedPattern> <!--relocate packetevents package. choose something unique!-->
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -84,7 +86,7 @@
         <dependency>
             <groupId>com.github.retrooper.packetevents</groupId>
             <artifactId>bukkit</artifactId>
-            <version>2.0-94bd45a1f9-1</version>
+            <version>2.0-528a7ec7e5-1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
