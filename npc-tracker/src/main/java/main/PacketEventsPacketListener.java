@@ -68,7 +68,6 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                         WrapperPlayClientPlayerPosition positionPacket = new WrapperPlayClientPlayerPosition(event);
                         Location to = npc.getLocation().clone();
                         to.setPosition(positionPacket.getPosition());
-                        System.out.println("pre player pos");
                         PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);
                     }
                     break;
@@ -79,7 +78,6 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                         WrapperPlayClientPlayerRotation rotationPacket = new WrapperPlayClientPlayerRotation(event);
                         float yaw = rotationPacket.getYaw();
                         float pitch = rotationPacket.getPitch();
-                        System.out.println("pre entity rotation");
                         PacketEvents.getAPI().getNPCManager().updateNPCRotation(npc, (byte) yaw, (byte) pitch);
                     }
                     break;
@@ -90,7 +88,6 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                         WrapperPlayClientPlayerPositionRotation positionAndRotationPacket = new WrapperPlayClientPlayerPositionRotation(event);
                         //Make sure wrapper names are consistent with packet types
                         Location to = new Location(positionAndRotationPacket.getPosition(), positionAndRotationPacket.getYaw(), positionAndRotationPacket.getPitch());
-                        System.out.println("pre pos and rotation");
                         PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);
                     }
                     break;
