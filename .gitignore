@@ -1,0 +1,9 @@
+/.idea/
+/attack-detector/attack-detector.iml
+/client-version-accessor/client-version-accessor.iml
+/knockback-detector/knockback-detector.iml
+/shading-packetevents/shading-packetevents.iml
+/attack-detector/target/
+/client-version-accessor/target/
+/knockback-detector/target/
+/shading-packetevents/target/
