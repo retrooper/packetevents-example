@@ -25,7 +25,7 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
     private final Map<UUID, NPC> NPC_MAP = new HashMap<>();
 
     public PacketEventsPacketListener() {
-        super(PacketListenerPriority.HIGH);
+        super(PacketListenerPriority.HIGH, true);
     }
 
     @Override

@@ -12,13 +12,11 @@ import com.github.retrooper.packetevents.protocol.player.ClientVersion;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 public class PacketEventsPacketListener extends PacketListenerAbstract {
     public PacketEventsPacketListener() {
-        super(PacketListenerPriority.LOW);
+        super(PacketListenerPriority.LOW, true);
     }
 
     @Override
