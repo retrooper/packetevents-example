@@ -7,17 +7,20 @@ import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.impl.PacketSendEvent;
 import com.github.retrooper.packetevents.manager.npc.NPC;
 import com.github.retrooper.packetevents.protocol.ConnectionState;
-import com.github.retrooper.packetevents.protocol.gameprofile.GameProfile;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.GameProfile;
+import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.world.Location;
+import com.github.retrooper.packetevents.util.MojangAPIUtil;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionRotation;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionAndRotation;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
 import io.github.retrooper.packetevents.utils.SpigotReflectionUtil;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -44,7 +47,8 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                             player.sendMessage("NPC already exists");
                             return;
                         }
-                        npc = new NPC(displayName, SpigotReflectionUtil.generateEntityId(), new GameProfile(UUID.randomUUID(), displayName));
+                        List<TextureProperty> skin = MojangAPIUtil.requestPlayerTextureProperties(player.getUniqueId());
+                        npc = new NPC(displayName, SpigotReflectionUtil.generateEntityId(), new GameProfile(UUID.randomUUID(), displayName, skin));
                         npc.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
                                 player.getLocation().getYaw(), player.getLocation().getPitch()));
                         PacketEvents.getAPI().getNPCManager().spawn(event.getChannel(), npc);
@@ -85,7 +89,7 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                 case PLAYER_POSITION_AND_ROTATION: {
                     NPC npc = NPC_MAP.get(player.getUniqueId());
                     if (npc != null) {
-                        WrapperPlayClientPlayerPositionRotation positionAndRotationPacket = new WrapperPlayClientPlayerPositionRotation(event);
+                        WrapperPlayClientPlayerPositionAndRotation positionAndRotationPacket = new WrapperPlayClientPlayerPositionAndRotation(event);
                         //Make sure wrapper names are consistent with packet types
                         Location to = new Location(positionAndRotationPacket.getPosition(), positionAndRotationPacket.getYaw(), positionAndRotationPacket.getPitch());
                         PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);
