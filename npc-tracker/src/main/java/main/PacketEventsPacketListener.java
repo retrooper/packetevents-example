@@ -17,6 +17,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPl
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionAndRotation;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
 import io.github.retrooper.packetevents.utils.SpigotReflectionUtil;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -48,17 +49,22 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                             return;
                         }
                         List<TextureProperty> skin = MojangAPIUtil.requestPlayerTextureProperties(player.getUniqueId());
-                        npc = new NPC(displayName, SpigotReflectionUtil.generateEntityId(), new GameProfile(UUID.randomUUID(), displayName, skin));
+                        npc = new NPC(new GameProfile(UUID.randomUUID(), displayName, skin),
+                                SpigotReflectionUtil.generateEntityId(),
+                                null,
+                                NamedTextColor.RED,
+                                null,
+                                null);
                         npc.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
                                 player.getLocation().getYaw(), player.getLocation().getPitch()));
                         PacketEvents.getAPI().getNPCManager().spawn(event.getChannel(), npc);
                         NPC_MAP.put(player.getUniqueId(), npc);
-                        player.sendMessage("Spawned: " + npc.getDisplayName());
+                        player.sendMessage("Spawned: " + npc.getProfile().getName());
                     } else if (message.equals("destroy npc")) {
                         NPC npc = NPC_MAP.get(player.getUniqueId());
                         if (npc != null) {
                             PacketEvents.getAPI().getNPCManager().despawn(event.getChannel(), npc);
-                            player.sendMessage("Despawned: " + npc.getDisplayName());
+                            player.sendMessage("Despawned: " + npc.getProfile().getName());
                             NPC_MAP.remove(player.getUniqueId());
                         } else {
                             player.sendMessage("No NPC was ever spawned");
