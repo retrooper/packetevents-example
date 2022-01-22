@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.github.retrooper.packetevents</groupId>
             <artifactId>spigot</artifactId>
-            <version>2.0-4549b8305e-1</version>
+            <version>2.0-b7b35c3ea1-1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
