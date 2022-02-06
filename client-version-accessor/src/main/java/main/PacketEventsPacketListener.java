@@ -3,9 +3,11 @@ package main;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.chat.ChatPosition;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import net.kyori.adventure.text.Component;
@@ -18,6 +20,8 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+        //Cross-platform user
+        User user = event.getUser();
         if (event.getPacketType() == PacketType.Play.Client.CHAT_MESSAGE) {
             WrapperPlayClientChatMessage chatMessage = new WrapperPlayClientChatMessage(event);
             String message = chatMessage.getMessage();
@@ -25,9 +29,7 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
                 ClientVersion clientVersion = PacketEvents.getAPI().getPlayerManager().getClientVersion(event.getChannel());
                 Component component = Component.text("Your client version: " + clientVersion.getReleaseName() + ".")
                         .color(NamedTextColor.GOLD);
-                WrapperPlayServerChatMessage chatMessagePacket = new WrapperPlayServerChatMessage(component,
-                        WrapperPlayServerChatMessage.ChatPosition.CHAT);
-                PacketEvents.getAPI().getPlayerManager().sendPacket(event.getChannel(), chatMessagePacket);
+                user.sendMessage(component);
                 event.setCancelled(true);
             }
         }

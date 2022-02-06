@@ -17,8 +17,7 @@ public class Main extends JavaPlugin {
     @Override
     public void onEnable() {
         //We register before calling PacketEvents#init, because that method might already call some events.
-        //Hold onto this listener instance incase we want to unregister later
-        PacketListenerAbstract listener = PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
                 PacketListenerPriority.LOW, true);
         PacketEvents.getAPI().init();
     }

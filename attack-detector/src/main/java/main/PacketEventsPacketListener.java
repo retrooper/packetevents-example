@@ -2,10 +2,12 @@ package main;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
-import com.github.retrooper.packetevents.event.impl.PacketReceiveEvent;
-import com.github.retrooper.packetevents.event.impl.PacketSendEvent;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.chat.ChatPosition;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.protocol.world.Dimension;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
@@ -18,13 +20,15 @@ import net.kyori.adventure.text.format.TextDecoration;
 public class PacketEventsPacketListener implements PacketListener {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+        //Cross-platform user abstraction
+        User user = event.getUser();
         //Whenever the player sends an entity interaction packet.
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
             WrapperPlayClientInteractEntity interactEntity = new WrapperPlayClientInteractEntity(event);
             WrapperPlayClientInteractEntity.InteractAction action = interactEntity.getAction();
             if (action == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                 int entityID = interactEntity.getEntityId();
-                //Send them a message using the chat packet.
+                //Create a chat component with the Adventure API
                 Component message = Component.text("You attacked an entity.")
                         .hoverEvent(HoverEvent.hoverEvent(
                                 HoverEvent.Action.SHOW_TEXT,
@@ -33,14 +37,8 @@ public class PacketEventsPacketListener implements PacketListener {
                                         .decorate(TextDecoration.BOLD)
                                         .decorate(TextDecoration.ITALIC)
                         ));
-                WrapperPlayServerChatMessage chatMessagePacket = new WrapperPlayServerChatMessage(message,
-                        WrapperPlayServerChatMessage.ChatPosition.CHAT);
-
-                //This is optional, it just encodes the packet.
-                //If you forget to do it, it will be done the first time you send this wrapper to a player.
-                chatMessagePacket.prepareForSend();
-
-                PacketEvents.getAPI().getPlayerManager().sendPacket(event.getChannel(), chatMessagePacket);
+                //Send it to the cross-platform user
+                user.sendMessage(message);
             }
         }
     }
