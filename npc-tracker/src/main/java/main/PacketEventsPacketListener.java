@@ -91,7 +91,8 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
             case PLAYER_POSITION_AND_ROTATION: {
                 NPC npc = NPC_MAP.get(player.getUniqueId());
                 if (npc != null) {
-                    WrapperPlayClientPlayerPositionAndRotation positionAndRotationPacket = new WrapperPlayClientPlayerPositionAndRotation(event);
+                    WrapperPlayClientPlayerPositionAndRotation positionAndRotationPacket
+                            = new WrapperPlayClientPlayerPositionAndRotation(event);
                     //Make sure wrapper names are consistent with packet types
                     Location to = new Location(positionAndRotationPacket.getPosition(), positionAndRotationPacket.getYaw(), positionAndRotationPacket.getPitch());
                     PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);

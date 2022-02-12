@@ -24,7 +24,7 @@ public class PacketEventsPacketListener extends PacketListenerAbstract {
             WrapperPlayClientChatMessage chatMessage = new WrapperPlayClientChatMessage(event);
             String message = chatMessage.getMessage();
             if (message.equalsIgnoreCase("cv?")) {
-                ClientVersion clientVersion = PacketEvents.getAPI().getPlayerManager().getClientVersion(event.getChannel());
+                ClientVersion clientVersion = PacketEvents.getAPI().getProtocolManager().getClientVersion(event.getChannel());
                 Component component = Component.text("Your client version: " + clientVersion.getReleaseName() + ".")
                         .color(NamedTextColor.GOLD);
                 user.sendMessage(component);

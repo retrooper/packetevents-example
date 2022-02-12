@@ -49,7 +49,9 @@ public class PacketEventsPacketListener implements PacketListener {
             WrapperPlayServerRespawn respawn = new WrapperPlayServerRespawn(event);
             Dimension dimension = respawn.getDimension();
             GameMode gameMode = respawn.getGameMode();
-            System.out.println("You have respawned! Dimension type: " + dimension.getType().name() + ", Game mode: " + gameMode.name());
+            System.out.println(event.getUser().getProfile().getName()
+                    + " have respawned! Dimension type: "
+                    + dimension.getType().name() + ", Game mode: " + gameMode.name());
         }
     }
 }
