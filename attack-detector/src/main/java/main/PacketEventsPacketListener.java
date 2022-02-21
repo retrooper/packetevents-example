@@ -1,16 +1,13 @@
 package main;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
-import com.github.retrooper.packetevents.protocol.chat.ChatPosition;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.protocol.world.Dimension;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerChatMessage;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
