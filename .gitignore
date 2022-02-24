@@ -8,3 +8,5 @@
 /client-version-accessor/target/
 /npc-tracker/target/
 /shading-packetevents/target/
+/thread-safe-listener/target/
+/thread-safe-listener/thread-safe-listener.iml
