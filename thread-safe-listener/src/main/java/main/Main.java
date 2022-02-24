@@ -1,13 +1,10 @@
 package main;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.PacketListenerAbstract;
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
-
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
@@ -16,9 +13,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        //We register before calling PacketEvents#init, because that method might already call some events.
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
-                PacketListenerPriority.LOW, true, false);
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener());
         PacketEvents.getAPI().init();
     }
 

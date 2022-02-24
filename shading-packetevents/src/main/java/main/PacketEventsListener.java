@@ -9,13 +9,12 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 
 public class PacketEventsListener extends SimplePacketListenerAbstract {
 
     public PacketEventsListener() {
-        super(PacketListenerPriority.NORMAL, true);
+        super(PacketListenerPriority.NORMAL, true, false);
     }
 
     @Override

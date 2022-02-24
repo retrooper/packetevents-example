@@ -1,0 +1,7 @@
+name: Thread-Safe-Listener
+main: main.Main
+version: 1.0.0
+author: retrooper
+load: POSTWORLD
+depend:
+  - packetevents

@@ -13,6 +13,7 @@
         <module>attack-detector</module>
         <module>npc-tracker</module>
         <module>shading-packetevents</module>
+        <module>thread-safe-listener</module>
     </modules>
 
     <properties>
