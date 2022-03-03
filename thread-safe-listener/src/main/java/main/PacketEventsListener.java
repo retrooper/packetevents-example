@@ -15,6 +15,7 @@ public class PacketEventsListener extends PacketListenerAbstract {
     private static final boolean READ_ONLY = true;
     private static final boolean THREAD_SAFE = true;
     private static final ExecutorService EXECUTOR = Executors.newSingleThreadExecutor();
+
     public PacketEventsListener() {
         super(PacketListenerPriority.NORMAL, READ_ONLY, THREAD_SAFE);
     }
@@ -30,8 +31,7 @@ public class PacketEventsListener extends PacketListenerAbstract {
                 //Make sure to cleanup the event, to prevent memory leaks
                 event.cleanUp();
             });
-        }
-        else {
+        } else {
             //Cleanup event once we are done dealing with it.
             event.cleanUp();
         }

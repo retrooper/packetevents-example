@@ -1,11 +1,10 @@
 package main;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
-import com.github.retrooper.packetevents.manager.npc.NPC;
+import com.github.retrooper.packetevents.protocol.npc.NPC;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.protocol.world.Location;
@@ -27,7 +26,7 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
     private final Map<UUID, NPC> NPC_MAP = new HashMap<>();
 
     public PacketEventsPacketListener() {
-        super(PacketListenerPriority.HIGH, true);
+        super(PacketListenerPriority.HIGH, true, false);
     }
 
     @Override
@@ -53,13 +52,13 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
                             null);
                     npc.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
                             player.getLocation().getYaw(), player.getLocation().getPitch()));
-                    PacketEvents.getAPI().getNPCManager().spawn(event.getChannel(), npc);
+                    npc.spawn(event.getChannel());
                     NPC_MAP.put(player.getUniqueId(), npc);
                     player.sendMessage("Spawned: " + npc.getProfile().getName());
                 } else if (message.equals("destroy npc")) {
                     NPC npc = NPC_MAP.get(player.getUniqueId());
                     if (npc != null) {
-                        PacketEvents.getAPI().getNPCManager().despawn(event.getChannel(), npc);
+                        npc.despawn(event.getChannel());
                         player.sendMessage("Despawned: " + npc.getProfile().getName());
                         NPC_MAP.remove(player.getUniqueId());
                     } else {
@@ -74,7 +73,7 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
                     WrapperPlayClientPlayerPosition positionPacket = new WrapperPlayClientPlayerPosition(event);
                     Location to = npc.getLocation().clone();
                     to.setPosition(positionPacket.getPosition());
-                    PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);
+                    npc.updateLocation(to);
                 }
                 break;
             }
@@ -84,7 +83,7 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
                     WrapperPlayClientPlayerRotation rotationPacket = new WrapperPlayClientPlayerRotation(event);
                     float yaw = rotationPacket.getYaw();
                     float pitch = rotationPacket.getPitch();
-                    PacketEvents.getAPI().getNPCManager().updateNPCRotation(npc, (byte) yaw, (byte) pitch);
+                    npc.updateRotation(yaw, pitch);
                 }
                 break;
             }
@@ -95,7 +94,7 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
                             = new WrapperPlayClientPlayerPositionAndRotation(event);
                     //Make sure wrapper names are consistent with packet types
                     Location to = new Location(positionAndRotationPacket.getPosition(), positionAndRotationPacket.getYaw(), positionAndRotationPacket.getPitch());
-                    PacketEvents.getAPI().getNPCManager().updateNPCLocation(npc, to);
+                    npc.updateLocation(to);
                 }
                 break;
             }
