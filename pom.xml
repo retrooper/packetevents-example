@@ -42,7 +42,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents</artifactId>
-            <version>dev-d1fb535ca7-1</version>
+            <version>v1.8.0</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
