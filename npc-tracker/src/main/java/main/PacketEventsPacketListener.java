@@ -13,7 +13,7 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientCh
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionAndRotation;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
-import io.github.retrooper.packetevents.utils.SpigotReflectionUtil;
+import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
