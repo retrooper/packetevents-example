@@ -10,6 +10,10 @@ public class Main extends JavaPlugin {
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        //Are all listeners read only?
+        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
+                .checkForUpdates(true)
+                .bStats(true);
         PacketEvents.getAPI().load();
     }
 
@@ -17,7 +21,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         //We register before calling PacketEvents#init, because that method might already call some events.
         PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
-                PacketListenerPriority.LOW, true, false);
+                PacketListenerPriority.LOW);
         PacketEvents.getAPI().init();
     }
 

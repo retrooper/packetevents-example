@@ -10,7 +10,7 @@ import org.bukkit.ChatColor;
 
 public class PacketEventsPacketListener extends PacketListenerAbstract {
     public PacketEventsPacketListener() {
-        super(PacketListenerPriority.LOW, true, false);
+        super(PacketListenerPriority.LOW);
     }
 
     @Override

@@ -8,6 +8,10 @@ public class Main extends JavaPlugin {
     @Override
     public void onLoad() {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        //Are all listeners read only?
+        PacketEvents.getAPI().getSettings().readOnlyListeners(true)
+                .checkForUpdates(true)
+                .bStats(true);
         PacketEvents.getAPI().load();
     }
 

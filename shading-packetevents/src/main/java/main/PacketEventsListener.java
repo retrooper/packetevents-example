@@ -2,6 +2,8 @@ package main;
 
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
+import com.github.retrooper.packetevents.event.UserConnectEvent;
+import com.github.retrooper.packetevents.event.UserDisconnectEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.item.type.ItemTypes;
@@ -10,11 +12,25 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientClickWindow;
 import org.bukkit.ChatColor;
 
+import java.net.InetSocketAddress;
+
 
 public class PacketEventsListener extends SimplePacketListenerAbstract {
-
     public PacketEventsListener() {
-        super(PacketListenerPriority.NORMAL, true, false);
+        super(PacketListenerPriority.NORMAL);
+    }
+
+    @Override
+    public void onUserConnect(UserConnectEvent event) {
+        User user = event.getUser();
+        InetSocketAddress address = user.getAddress();
+        System.out.println("User has joined with IP: " + address.getHostString() + ":" + address.getPort());
+    }
+
+    @Override
+    public void onUserDisconnect(UserDisconnectEvent event) {
+        User user = event.getUser();
+        //System.out.println("A user has disconnected!");
     }
 
     @Override
