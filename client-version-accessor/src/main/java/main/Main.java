@@ -13,10 +13,9 @@ public class Main extends JavaPlugin {
         PacketEventsSettings settings = PacketEvents.get().getSettings();
         settings
                 .fallbackServerVersion(ServerVersion.v_1_7_10)
-                .compatInjector(false)
                 .checkForUpdates(false)
                 .bStats(true);
-        PacketEvents.get().loadAsyncNewThread();
+        PacketEvents.get().load();
     }
 
     @Override
