@@ -40,7 +40,7 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
             WrapperPlayClientClickWindow clickWindow = new WrapperPlayClientClickWindow(event);
             //If the window ID is 0, we are dealing with the player inventory
             if (clickWindow.getWindowId() == 0) {
-                ItemStack itemStack = clickWindow.getClickedItemStack();
+                ItemStack itemStack = clickWindow.getCarriedItemStack();
                 //Chicken egg max amount is 16
                 if (itemStack.getType().equals(ItemTypes.EGG) &&
                         itemStack.getAmount() == ItemTypes.EGG.getMaxAmount()) {
