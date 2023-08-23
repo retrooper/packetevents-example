@@ -5,6 +5,7 @@ import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
 import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
 import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
 import com.github.retrooper.packetevents.protocol.npc.NPC;
+import com.github.retrooper.packetevents.protocol.player.GameMode;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.protocol.world.Location;
@@ -46,6 +47,7 @@ public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
                     List<TextureProperty> skin = MojangAPIUtil.requestPlayerTextureProperties(player.getUniqueId());
                     npc = new NPC(new UserProfile(UUID.randomUUID(), displayName, skin),
                             SpigotReflectionUtil.generateEntityId(),
+                            GameMode.SURVIVAL,
                             null,
                             NamedTextColor.RED,
                             null,

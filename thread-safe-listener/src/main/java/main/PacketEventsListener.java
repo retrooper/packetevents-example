@@ -21,15 +21,18 @@ public class PacketEventsListener extends PacketListenerAbstract {
 
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
+        //In this listener we aim to process packets on another thread.
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
+            //In order to do that we need to clone the event, allowing us to retain the data in the packet.
             PacketReceiveEvent copy = event.clone();
             EXECUTOR.execute(() -> {
+                //We may now use wrappers to process this event.
                 WrapperPlayClientInteractEntity interaction =
                         new WrapperPlayClientInteractEntity(copy);
                 if (interaction.getAction() == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                     copy.getUser().sendMessage(ChatColor.RED + "You hit an entity!");
                 }
-                //Make sure to clean up the event, to prevent memory leaks.
+                //Since we retained the data in the event, we must clean it up to avoid memory leaks!
                 copy.cleanUp();
             });
         }
