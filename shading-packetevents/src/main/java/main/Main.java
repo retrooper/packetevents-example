@@ -11,8 +11,7 @@ public class Main extends JavaPlugin {
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //Are all listeners read only?
         PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
-                .checkForUpdates(true)
-                .bStats(true);
+                .checkForUpdates(true);
         PacketEvents.getAPI().load();
     }
 
