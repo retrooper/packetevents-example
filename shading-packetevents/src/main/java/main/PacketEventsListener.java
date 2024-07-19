@@ -42,10 +42,10 @@ public class PacketEventsListener extends SimplePacketListenerAbstract {
             if (clickWindow.getWindowId() == 0) {
                 ItemStack itemStack = clickWindow.getCarriedItemStack();
                 //Chicken egg max amount is 16
-                if (itemStack.getType().equals(ItemTypes.EGG) &&
+                if (itemStack.getType() == ItemTypes.EGG &&
                         itemStack.getAmount() == ItemTypes.EGG.getMaxAmount()) {
                     user.sendMessage(ChatColor.GOLD + "You have clicked on fully stacked chicken eggs!");
-                } else if (itemStack.getType().equals(ItemTypes.DIAMOND_SWORD)) {
+                } else if (itemStack.getType() == ItemTypes.DIAMOND_SWORD) {
                     user.sendMessage(ChatColor.AQUA + "You have clicked on a diamond sword!");
                 }
             }

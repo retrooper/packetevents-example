@@ -8,21 +8,22 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        //Creating and loading the API is necessary when shading!
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-        //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
-                .checkForUpdates(true);
         PacketEvents.getAPI().load();
+        //Register the listener
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener());
     }
 
     @Override
     public void onEnable() {
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsListener());
+        //Initialize the API!
         PacketEvents.getAPI().init();
     }
 
     @Override
     public void onDisable() {
+        //Terminate!
         PacketEvents.getAPI().terminate();
     }
 }

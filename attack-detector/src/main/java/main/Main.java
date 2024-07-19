@@ -9,23 +9,19 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
-        //Are all listeners read only?
-        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
-                .checkForUpdates(true);
-        PacketEvents.getAPI().load();
+        //PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        //PacketEvents.getAPI().load();
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
+                PacketListenerPriority.LOW);
     }
 
     @Override
     public void onEnable() {
-        //We register before calling PacketEvents#init, because that method might already call some events.
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
-                PacketListenerPriority.LOW);
-        PacketEvents.getAPI().init();
+        //PacketEvents.getAPI().init();
     }
 
     @Override
     public void onDisable() {
-        PacketEvents.getAPI().terminate();
+        //PacketEvents.getAPI().terminate();
     }
 }

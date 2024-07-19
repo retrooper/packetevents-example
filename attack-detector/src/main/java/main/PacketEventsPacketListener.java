@@ -9,15 +9,18 @@ import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.protocol.world.Dimension;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerRespawn;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateHealth;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.entity.Entity;
 
 public class PacketEventsPacketListener implements PacketListener {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        //Cross-platform user abstraction
+        //Cross-platform user
         User user = event.getUser();
         //Whenever the player sends an entity interaction packet.
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
@@ -25,11 +28,15 @@ public class PacketEventsPacketListener implements PacketListener {
             WrapperPlayClientInteractEntity.InteractAction action = interactEntity.getAction();
             if (action == WrapperPlayClientInteractEntity.InteractAction.ATTACK) {
                 int entityID = interactEntity.getEntityId();
+                //Find the Bukkit entity
+                Entity entity = SpigotConversionUtil.getEntityById(null, entityID);
+
+
                 //Create a chat component with the Adventure API
                 Component message = Component.text("You attacked an entity.")
                         .hoverEvent(HoverEvent.hoverEvent(
                                 HoverEvent.Action.SHOW_TEXT,
-                                Component.text("Entity ID: " + entityID)
+                                Component.text("Entity Name: " + entity.getName())
                                         .color(NamedTextColor.GREEN)
                                         .decorate(TextDecoration.BOLD)
                                         .decorate(TextDecoration.ITALIC)
@@ -42,13 +49,10 @@ public class PacketEventsPacketListener implements PacketListener {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacketType() == PacketType.Play.Server.RESPAWN) {
-            WrapperPlayServerRespawn respawn = new WrapperPlayServerRespawn(event);
-            Dimension dimension = respawn.getDimension();
-            GameMode gameMode = respawn.getGameMode();
-            System.out.println(event.getUser().getProfile().getName()
-                    + " have respawned! Dimension type: "
-                    + dimension.getType().name() + ", Game mode: " + gameMode.name());
+        if (event.getPacketType() == PacketType.Play.Server.UPDATE_HEALTH) {
+            //Health of an entity was updated!
+            WrapperPlayServerUpdateHealth packet = new WrapperPlayServerUpdateHealth(event);
+            float health = packet.getHealth();
         }
     }
 }
