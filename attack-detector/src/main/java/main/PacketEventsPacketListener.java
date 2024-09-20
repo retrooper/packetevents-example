@@ -20,7 +20,6 @@ import org.bukkit.entity.Entity;
 public class PacketEventsPacketListener implements PacketListener {
     @Override
     public void onPacketReceive(PacketReceiveEvent event) {
-        //Cross-platform user
         User user = event.getUser();
         //Whenever the player sends an entity interaction packet.
         if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {

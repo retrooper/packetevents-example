@@ -1,110 +1,93 @@
 package main;
 
-import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import com.github.retrooper.packetevents.event.SimplePacketListenerAbstract;
-import com.github.retrooper.packetevents.event.simple.PacketPlayReceiveEvent;
-import com.github.retrooper.packetevents.event.simple.PacketPlaySendEvent;
-import com.github.retrooper.packetevents.protocol.npc.NPC;
-import com.github.retrooper.packetevents.protocol.player.GameMode;
-import com.github.retrooper.packetevents.protocol.player.TextureProperty;
-import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.PacketListener;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.event.UserLoginEvent;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
+import com.github.retrooper.packetevents.protocol.item.enchantment.Enchantment;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.protocol.player.User;
 import com.github.retrooper.packetevents.protocol.world.Location;
-import com.github.retrooper.packetevents.util.MojangAPIUtil;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientChatMessage;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPosition;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerPositionAndRotation;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPlayerRotation;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import io.github.retrooper.packetevents.util.SpigotReflectionUtil;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class PacketEventsPacketListener extends SimplePacketListenerAbstract {
-    private final Map<UUID, NPC> NPC_MAP = new HashMap<>();
+public class PacketEventsPacketListener implements PacketListener {
+    private FakeArmorStand fakeArmorStand = null;
 
-    public PacketEventsPacketListener() {
-        super(PacketListenerPriority.HIGH);
+    @Override
+    public void onUserLogin(UserLoginEvent event) {
+        User user = event.getUser();
+        Player player = event.getPlayer();
+
+        // Access the user's current location
+        Location spawnLocation = SpigotConversionUtil.fromBukkitLocation(player.getLocation());
+
+        // Create the Armor Stand (if we haven't already)
+        if (fakeArmorStand == null) {
+            // Generate a random UUID
+            UUID uuid = UUID.randomUUID();
+            // Generate an Entity ID
+            int entityId = SpigotReflectionUtil.generateEntityId();
+
+            fakeArmorStand = new FakeArmorStand(uuid, entityId);
+        }
+        // Spawn the Armor Stand at the user's current location
+        fakeArmorStand.spawn(user, spawnLocation);
     }
 
     @Override
-    public void onPacketPlayReceive(PacketPlayReceiveEvent event) {
+    public void onPacketReceive(PacketReceiveEvent event) {
+        User user = event.getUser();
         Player player = (Player) event.getPlayer();
-        switch (event.getPacketType()) {
-            case CHAT_MESSAGE: {
-                WrapperPlayClientChatMessage chatMessage = new WrapperPlayClientChatMessage(event);
-                String message = chatMessage.getMessage();
-                if (message.equals("create npc")) {
-                    String displayName = player.getDisplayName() + "_clone";
-                    NPC npc = NPC_MAP.get(player.getUniqueId());
-                    if (npc != null) {
-                        player.sendMessage("NPC already exists");
-                        return;
-                    }
-                    List<TextureProperty> skin = MojangAPIUtil.requestPlayerTextureProperties(player.getUniqueId());
-                    npc = new NPC(new UserProfile(UUID.randomUUID(), displayName, skin),
-                            SpigotReflectionUtil.generateEntityId(),
-                            GameMode.SURVIVAL,
-                            null,
-                            NamedTextColor.RED,
-                            null,
-                            null);
-                    npc.setLocation(new Location(player.getLocation().getX(), player.getLocation().getY(), player.getLocation().getZ(),
-                            player.getLocation().getYaw(), player.getLocation().getPitch()));
-                    npc.spawn(event.getChannel());
-                    NPC_MAP.put(player.getUniqueId(), npc);
-                    player.sendMessage("Spawned: " + npc.getProfile().getName());
-                } else if (message.equals("destroy npc")) {
-                    NPC npc = NPC_MAP.get(player.getUniqueId());
-                    if (npc != null) {
-                        npc.despawn(event.getChannel());
-                        player.sendMessage("Despawned: " + npc.getProfile().getName());
-                        NPC_MAP.remove(player.getUniqueId());
-                    } else {
-                        player.sendMessage("No NPC was ever spawned");
-                    }
-                }
-                break;
-            }
-            case PLAYER_POSITION: {
-                NPC npc = NPC_MAP.get(player.getUniqueId());
-                if (npc != null) {
-                    WrapperPlayClientPlayerPosition positionPacket = new WrapperPlayClientPlayerPosition(event);
-                    Location to = npc.getLocation().clone();
-                    to.setPosition(positionPacket.getPosition());
-                    npc.updateLocation(to);
-                }
-                break;
-            }
-            case PLAYER_ROTATION: {
-                NPC npc = NPC_MAP.get(player.getUniqueId());
-                if (npc != null) {
-                    WrapperPlayClientPlayerRotation rotationPacket = new WrapperPlayClientPlayerRotation(event);
-                    float yaw = rotationPacket.getYaw();
-                    float pitch = rotationPacket.getPitch();
-                    npc.updateRotation(yaw, pitch);
-                }
-                break;
-            }
-            case PLAYER_POSITION_AND_ROTATION: {
-                NPC npc = NPC_MAP.get(player.getUniqueId());
-                if (npc != null) {
-                    WrapperPlayClientPlayerPositionAndRotation positionAndRotationPacket
-                            = new WrapperPlayClientPlayerPositionAndRotation(event);
-                    //Make sure wrapper names are consistent with packet types
-                    Location to = new Location(positionAndRotationPacket.getPosition(), positionAndRotationPacket.getYaw(), positionAndRotationPacket.getPitch());
-                    npc.updateLocation(to);
-                }
-                break;
+        if (event.getPacketType() == PacketType.Play.Client.INTERACT_ENTITY) {
+            WrapperPlayClientInteractEntity packet = new WrapperPlayClientInteractEntity(event);
+            int entityId = packet.getEntityId();
+
+            // Check if the client interacted with the Armor Stand (compare their IDs)
+            if (entityId == fakeArmorStand.entityId) {
+                //Increment their clicks
+                int clicks = fakeArmorStand.clicks.getOrDefault(user.getUUID(), 0) + 1;
+                fakeArmorStand.clicks.put(user.getUUID(), clicks);
+                user.sendMessage("You now have " + clicks + " clicks on the Armor Stand!");
             }
         }
     }
 
-    @Override
-    public void onPacketPlaySend(PacketPlaySendEvent event) {
+    private static class FakeArmorStand {
+        private final int entityId;
+        private final UUID uuid;
+        // Track their clicks
+        private final Map<UUID, Integer> clicks = new ConcurrentHashMap<>();
 
+        public FakeArmorStand(UUID uuid, int entityId) {
+            this.uuid = uuid;
+            this.entityId = entityId;
+        }
+
+        /**
+         * Code that spawns an Armor Stand for the player.
+         */
+        public void spawn(User user, Location location) {
+            WrapperPlayServerSpawnEntity packet = new WrapperPlayServerSpawnEntity(
+                    entityId,
+                    uuid,
+                    EntityTypes.ARMOR_STAND,
+                    location,
+                    location.getYaw(), // Head yaw
+                    0, // No additional data
+                    null // We won't specify any initial velocity
+            );
+            user.sendPacket(packet);
+        }
     }
 }

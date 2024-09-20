@@ -82,7 +82,7 @@
         </repository>
         <repository>
             <id>codemc-releases</id>
-            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+            <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
     </repositories>
 
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>
-            <version>2.4.1-SNAPSHOT</version>
+            <version>2.5.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

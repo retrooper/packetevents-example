@@ -1,7 +1,7 @@
 package main;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
@@ -10,7 +10,8 @@ public class Main extends JavaPlugin {
     public void onLoad() {
         //PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
         //PacketEvents.getAPI().load();
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener());
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketEventsPacketListener(),
+                PacketListenerPriority.NORMAL);
     }
 
     @Override
